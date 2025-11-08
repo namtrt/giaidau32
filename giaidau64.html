@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giải đấu bóng bàn - Loại kép</title>
+    <title>Giải đấu bóng bàn - Loại kép 48-64 người</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         * {
@@ -72,7 +72,7 @@
         
         textarea {
             width: 100%;
-            height: 150px;
+            height: 200px;
             padding: 12px;
             border: none;
             border-radius: 8px;
@@ -137,10 +137,10 @@
             display: flex;
             justify-content: space-between;
             padding: 20px 0;
-            width: 3000px;
+            width: 4000px;
             min-height: 100vh;
             cursor: grab;
-            user-select: none; /* Ngăn không cho bôi đen chữ */
+            user-select: none;
         }
         
         .bracket-container:active {
@@ -242,25 +242,6 @@
             margin-top: 5px;
         }
         
-        .connector {
-            position: absolute;
-            width: 30px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.5);
-            right: -30px;
-            top: 50%;
-        }
-        
-        .connector::after {
-            content: '';
-            position: absolute;
-            width: 2px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.5);
-            top: 0;
-            left: 0;
-        }
-        
         .footer {
             text-align: center;
             margin-top: 30px;
@@ -358,7 +339,7 @@
     <div class="container">
         <header>
             <h1>Giải đấu bóng bàn</h1>
-            <p class="subtitle">Thể thức loại kép - 32 người chơi</p>
+            <p class="subtitle">Thể thức loại kép - 48-64 người chơi</p>
         </header>
         
         <section class="setup-section">
@@ -368,8 +349,8 @@
                 <input type="text" id="tournament-name" class="tournament-name-input" placeholder="Nhập tên giải đấu">
             </div>
             <div class="input-group">
-                <label for="players">Nhập danh sách người chơi (32 người, mỗi người một dòng):</label>
-                <textarea id="players" placeholder="Người chơi 1&#10;Người chơi 2&#10;...&#10;Người chơi 32"></textarea>
+                <label for="players">Nhập danh sách người chơi (48-64 người, mỗi người một dòng):</label>
+                <textarea id="players" placeholder="Người chơi 1&#10;Người chơi 2&#10;...&#10;Người chơi 64"></textarea>
             </div>
             <div class="button-group">
                 <button id="start-btn">Bắt đầu giải đấu</button>
@@ -418,40 +399,7 @@
             const exportMessage = document.getElementById('export-message');
             
             // Sample players for testing
-            const samplePlayers = [
-                "Người chơi 1",
-                "Người chơi 2",
-                "Người chơi 3",
-                "Người chơi 4",
-                "Người chơi 5",
-                "Người chơi 6",
-                "Người chơi 7",
-                "Người chơi 8",
-                "Người chơi 9",
-                "Người chơi 10",
-                "Người chơi 11",
-                "Người chơi 12",
-                "Người chơi 13",
-                "Người chơi 14",
-                "Người chơi 15",
-                "Người chơi 16",
-                "Người chơi 17",
-                "Người chơi 18",
-                "Người chơi 19",
-                "Người chơi 20",
-                "Người chơi 21",
-                "Người chơi 22",
-                "Người chơi 23",
-                "Người chơi 24",
-                "Người chơi 25",
-                "Người chơi 26",
-                "Người chơi 27",
-                "Người chơi 28",
-                "Người chơi 29",
-                "Người chơi 30",
-                "Người chơi 31",
-                "Người chơi 32",
-            ];
+            const samplePlayers = Array.from({length: 64}, (_, i) => `Người chơi ${i + 1}`);
             
             let tournament = null;
             let globalMatchId = 1;
@@ -472,20 +420,20 @@
                     .filter(name => name !== '');
 
                 // Validate số lượng người chơi
-                if (players.length < 30 || players.length > 32) {
-                    alert("Số lượng người chơi phải từ 30 đến 32!");
+                if (players.length < 48 || players.length > 64) {
+                    alert("Số lượng người chơi phải từ 48 đến 64!");
                     return;
                 }
                 
-                // Nếu ít hơn 32, thêm người chơi mặc định
-                if (players.length < 32) {
-                    const needed = 32 - players.length;
+                // Nếu ít hơn 64, thêm người chơi mặc định
+                if (players.length < 64) {
+                    const needed = 64 - players.length;
                     for (let i = 1; i <= needed; i++) {
                         players.push(nonePersonText);
                     }
-                } else if (players.length > 32) {
-                    alert('Chỉ sử dụng 32 người chơi đầu tiên. Các người chơi sau đã bị bỏ qua.');
-                    players.splice(32);
+                } else if (players.length > 64) {
+                    alert('Chỉ sử dụng 64 người chơi đầu tiên. Các người chơi sau đã bị bỏ qua.');
+                    players.splice(64);
                 }
                 
                 const tournamentName = tournamentNameInput.value || "Giải đấu bóng bàn";
@@ -500,7 +448,7 @@
             
             newTournamentBtn.addEventListener('click', () => {
                 if (confirm('Bạn có chắc chắn muốn tạo giải đấu mới? Dữ liệu hiện tại sẽ bị xóa.')) {
-                    localStorage.removeItem('pingpongTournament');
+                    localStorage.removeItem('pingpongTournament64');
                     playersTextarea.value = samplePlayers.join('\n');
                     tournamentNameInput.value = "";
                     tournamentTitle.textContent = "Giải đấu bóng bàn";
@@ -535,7 +483,6 @@
             });
             
             function setupDrag() {
-                // Drag with mouse
                 bracketViewport.addEventListener('mousedown', (e) => {
                     isDragging = true;
                     startX = e.pageX - bracketViewport.offsetLeft;
@@ -566,51 +513,40 @@
                 shuffledPlayers = reorderShuffledPlayers(shuffledPlayers);
 
                 // Create tournament structure
+                // Vòng 1: 32 trận (64 người)
+                // Vòng 2.1 (Nhánh thắng): 16 trận
+                // Vòng 2.2 (Nhánh thua): 16 trận
+                // Vòng 3.1 (Nhánh thắng): 8 trận
+                // Vòng 3.2 (Nhánh thua): 16 trận
+                // Vòng 4 (Nhánh thua): 16 trận
+                // Vòng 5 (1/16): 16 trận - Bắt đầu loại trực tiếp từ 32 người
+                // Vòng 6 (1/8): 8 trận
+                // Vòng 7 (Tứ kết): 4 trận
+                // Vòng 8 (Bán kết): 2 trận
+                // Vòng 9 (Chung kết): 1 trận
                 return {
                     name: tournamentNameInput.value || "Giải đấu bóng bàn",
                     rounds: [
-                        createRound(1, 'Vòng 1', 16, shuffledPlayers.slice(0, 32)),
-                        createRound(2, 'Vòng 2.1 (Nhánh thắng)', 8, []),
-                        createRound(3, 'Vòng 2.2 (Nhánh thua)', 8, []),
-                        createRound(4, 'Vòng 3 (Nhánh thua)', 8, []),
-                        createRound(5, 'Vòng 4 (1/16)', 8, []),
-                        createRound(6, 'Vòng 5 (Tứ kết)', 4, []),
-                        createRound(7, 'Vòng 6 (Bán kết)', 2, []),
-                        createRound(8, 'Vòng 7 (Chung kết)', 1, [])
+                        createRound(1, 'Vòng 1', 32, shuffledPlayers.slice(0, 64)),
+                        createRound(2, 'Vòng 2.1 (Nhánh thắng)', 16, []),
+                        createRound(3, 'Vòng 2.2 (Nhánh thua)', 16, []),
+                        createRound(4, 'Vòng 3.1 (Nhánh thắng)', 8, []),
+                        createRound(5, 'Vòng 3.2 (Nhánh thua)', 16, []),
+                        createRound(6, 'Vòng 4 (Nhánh thua)', 16, []),
+                        createRound(7, 'Vòng 5 (1/16)', 16, []),
+                        createRound(8, 'Vòng 6 (1/8)', 8, []),
+                        createRound(9, 'Vòng 7 (Tứ kết)', 4, []),
+                        createRound(10, 'Vòng 8 (Bán kết)', 2, []),
+                        createRound(11, 'Vòng 9 (Chung kết)', 1, [])
                     ],
                     champion: null
                 };
             }
 
             function reorderShuffledPlayers(shuffledPlayers) {
-                const DASH_POSITIONS = [1, 5, 9, 13];
-
-                // 1. Tách ra các phần tử
-                const dashes = shuffledPlayers.filter(item => item === nonePersonText);
-                const others = shuffledPlayers.filter(item => item !== nonePersonText);
-
-                // 2. Kiểm tra số lượng dấu gạch đỏ
-                if (dashes.length > DASH_POSITIONS.length) {
-                console.error("Quá nhiều dấu gạch đỏ, không thể đặt hết vào các vị trí yêu cầu.");
-                } else {
-                    // 3. Tạo mảng kết quả rỗng
-                    const result = new Array(shuffledPlayers.length);
-
-                    // 4. Gán dấu gạch đỏ vào đúng vị trí yêu cầu
-                    for (let i = 0; i < dashes.length; i++) {
-                        result[DASH_POSITIONS[i]] = nonePersonText;
-                    }
-
-                    // 5. Gán các phần tử khác vào các vị trí còn lại
-                    let otherIndex = 0;
-                    for (let i = 0; i < result.length; i++) {
-                        if (result[i] === undefined && otherIndex < others.length) {
-                        result[i] = others[otherIndex++];
-                        }
-                    }
-
-                    return result;
-                }
+                // For 64 players, we might need different dash positions
+                // For now, just return shuffled players
+                return shuffledPlayers;
             }
             
             function createRound(roundNum, name, matchCount, players) {
@@ -641,7 +577,6 @@
                 bracketContainer.innerHTML = '';
                 let hasChampion = false;
                 
-                // Update tournament title
                 tournamentTitle.textContent = tournament.name;
                 
                 tournament.rounds.forEach((round, roundIndex) => {
@@ -663,14 +598,12 @@
                         matchHeader.innerHTML = `Trận ${match.globalMatchId}`;
                         matchElement.appendChild(matchHeader);
                         
-                        // Player 1 display
                         let player1Display = match.player1;
                         if (!player1Display) {
                             const sourceInfo = getSourceInfo(roundIndex, matchIndex, true);
                             player1Display = `<span class="${sourceInfo.class}">${sourceInfo.text}</span>`;
                         }
                         
-                        // Player 2 display
                         let player2Display = match.player2;
                         if (!player2Display) {
                             const sourceInfo = getSourceInfo(roundIndex, matchIndex, false);
@@ -699,11 +632,9 @@
                                 ''}
                         `;
                         
-                        // Add event listener to the button
                         const button = matchElement.querySelector('.set-winner-btn');
                         if (button) {
                             button.addEventListener('click', () => {
-                                // Kiểm tra xem đã có đủ tên người chơi chưa (không phải placeholder)
                                 if (!match.player1 || !match.player2) {
                                     alert('Trận đấu chưa sẵn sàng. Vui lòng chờ kết quả từ trận đấu trước.');
                                     return;
@@ -722,27 +653,22 @@
                                     return;
                                 }
                                 
-                                // Determine winner (player with higher score)
                                 const winnerIndex = player1Score > player2Score ? 0 : 1;
                                 
-                                // Update match
                                 match.score1 = player1Score;
                                 match.score2 = player2Score;
                                 match.winner = winnerIndex;
                                 match.completed = true;
                                 
-                                // Update next rounds
                                 updateNextRounds(roundIndex, matchIndex, winnerIndex);
                                 
-                                // Check if this is the final match
-                                if (roundIndex === 6) { // Final round
+                                if (roundIndex === 10) { // Final round
                                     tournament.champion = winnerIndex === 0 ? match.player1 : match.player2;
                                     championName.textContent = tournament.champion;
                                     championSection.style.display = 'block';
                                     hasChampion = true;
                                 }
                                 
-                                // Save and re-render
                                 saveTournament();
                                 renderTournament();
                             });
@@ -754,7 +680,6 @@
                     bracketContainer.appendChild(roundElement);
                 });
                 
-                // Show champion section if champion exists
                 if (tournament.champion) {
                     championName.textContent = tournament.champion;
                     championSection.style.display = 'block';
@@ -766,126 +691,130 @@
             }
             
             function getSourceInfo(roundIndex, matchIndex, isPlayer1) {
-                // Return text and class for placeholder
                 if (roundIndex === 0) return {text: "Chờ người chơi", class: "placeholder"};
                 
-                if (roundIndex === 1) { // Round 2.1 (Winners bracket)
-                    // Tính số trận tương ứng với cách ghép cặp mới
-                    if (matchIndex === 0) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 1 : 16)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 1) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 2: 15)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 2) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 3 : 14)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 3) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 4 : 13)}`, class: "win-placeholder"};
-                    } 
-                    
-                    else if (matchIndex === 4) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 5 : 12)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 5) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 6 : 11)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 6) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 7 : 10)}`, class: "win-placeholder"};
-                    } else if (matchIndex === 7) {
-                        return {text: `Thắng trận ${(isPlayer1 ? 8 : 9)}`, class: "win-placeholder"};
-                    }
+                // Round 2.1 (Nhánh thắng) - 16 trận
+                if (roundIndex === 1) {
+                    // Winners from Round 1 (32 matches) go to Round 2.1 (16 matches)
+                    // Match 0-15 of Round 1 → Match 0-7 of Round 2.1
+                    // Match 16-31 of Round 1 → Match 8-15 of Round 2.1
+                    const sourceMatch = matchIndex < 8 ? 
+                        (matchIndex * 2 + (isPlayer1 ? 0 : 1)) : 
+                        ((matchIndex - 8) * 2 + 16 + (isPlayer1 ? 0 : 1));
+                    return {text: `Thắng trận ${sourceMatch + 1}`, class: "win-placeholder"};
                 }
                 
-                if (roundIndex === 2) { // Round 2.2 (Losers bracket)
+                // Round 2.2 (Nhánh thua) - 16 trận
+                // Mapping: 49vs61, 50vs63, 51vs62, 52vs64, 53vs57, 54vs59, 55vs58, 56vs60
+                if (roundIndex === 2) {
+                    let sourceMatch;
                     if (matchIndex === 0) {
-                        return {text: `Thua trận ${(isPlayer1 ? 3 : 4)}`, class: "lose-placeholder"};
+                        // Trận 49: Thua trận 1 vs Thua trận 13
+                        sourceMatch = isPlayer1 ? 1 : 13;
                     } else if (matchIndex === 1) {
-                        return {text: `Thua trận ${(isPlayer1 ? 5 : 6)}`, class: "lose-placeholder"};
+                        // Trận 50: Thua trận 2 vs Thua trận 15
+                        sourceMatch = isPlayer1 ? 2 : 15;
                     } else if (matchIndex === 2) {
-                        return {text: `Thua trận ${(isPlayer1 ? 7 : 8)}`, class: "lose-placeholder"};
+                        // Trận 51: Thua trận 3 vs Thua trận 14
+                        sourceMatch = isPlayer1 ? 3 : 14;
                     } else if (matchIndex === 3) {
-                        return {text: `Thua trận ${(isPlayer1 ? 1 : 2)}`, class: "lose-placeholder"};
-                    }
-
-                    else if (matchIndex === 4) {
-                        return {text: `Thua trận ${(isPlayer1 ? 11 : 12)}`, class: "lose-placeholder"};
+                        // Trận 52: Thua trận 4 vs Thua trận 16
+                        sourceMatch = isPlayer1 ? 4 : 16;
+                    } else if (matchIndex === 4) {
+                        // Trận 53: Thua trận 5 vs Thua trận 9
+                        sourceMatch = isPlayer1 ? 5 : 9;
                     } else if (matchIndex === 5) {
-                        return {text: `Thua trận ${(isPlayer1 ? 13 : 14)}`, class: "lose-placeholder"};
+                        // Trận 54: Thua trận 6 vs Thua trận 11
+                        sourceMatch = isPlayer1 ? 6 : 11;
                     } else if (matchIndex === 6) {
-                        return {text: `Thua trận ${(isPlayer1 ? 15 : 16)}`, class: "lose-placeholder"};
+                        // Trận 55: Thua trận 7 vs Thua trận 10
+                        sourceMatch = isPlayer1 ? 7 : 10;
                     } else if (matchIndex === 7) {
-                        return {text: `Thua trận ${(isPlayer1 ? 9 : 10)}`, class: "lose-placeholder"};
+                        // Trận 56: Thua trận 8 vs Thua trận 12
+                        sourceMatch = isPlayer1 ? 8 : 12;
+                    } else if (matchIndex === 8) {
+                        // Trận 57: Thua trận 17 vs Thua trận 21
+                        sourceMatch = isPlayer1 ? 17 : 21;
+                    } else if (matchIndex === 9) {
+                        // Trận 58: Thua trận 18 vs Thua trận 20
+                        sourceMatch = isPlayer1 ? 18 : 20;
+                    } else if (matchIndex === 10) {
+                        // Trận 59: Thua trận 19 vs Thua trận 23
+                        sourceMatch = isPlayer1 ? 19 : 23;
+                    } else if (matchIndex === 11) {
+                        // Trận 60: Thua trận 22 vs Thua trận 24
+                        sourceMatch = isPlayer1 ? 22 : 24;
+                    } else if (matchIndex === 12) {
+                        // Trận 61: Thua trận 25 vs Thua trận 29
+                        sourceMatch = isPlayer1 ? 25 : 29;
+                    } else if (matchIndex === 13) {
+                        // Trận 62: Thua trận 26 vs Thua trận 28
+                        sourceMatch = isPlayer1 ? 26 : 28;
+                    } else if (matchIndex === 14) {
+                        // Trận 63: Thua trận 27 vs Thua trận 31
+                        sourceMatch = isPlayer1 ? 27 : 31;
+                    } else if (matchIndex === 15) {
+                        // Trận 64: Thua trận 30 vs Thua trận 32
+                        sourceMatch = isPlayer1 ? 30 : 32;
                     }
+                    return {text: `Thua trận ${sourceMatch}`, class: "lose-placeholder"};
                 }
                 
-                if (roundIndex === 3) { // Round 3 (Losers bracket)
-                    if (matchIndex === 0) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 18`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 26`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 1) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 17`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 25`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 2) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 20`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 28`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 3) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 19`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 27`, class: "win-placeholder"};
-                        }
-                    }
-
-                    else if (matchIndex === 4) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 22`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 30`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 5) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 21`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 29`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 6) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 24`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 32`, class: "win-placeholder"};
-                        }
-                    } else if (matchIndex === 7) {
-                        if (isPlayer1) {
-                            return {text: `Thua trận 23`, class: "lose-placeholder"};
-                        } else {
-                            return {text: `Thắng trận 31`, class: "win-placeholder"};
-                        }
-                    }
+                // Round 3.1 (Nhánh thắng) - 8 trận
+                if (roundIndex === 3) {
+                    const sourceMatch = matchIndex * 2 + (isPlayer1 ? 0 : 1);
+                    return {text: `Thắng trận ${33 + sourceMatch}`, class: "win-placeholder"};
                 }
-
-                if (roundIndex === 4) { // 1/16
+                
+                // Round 3.2 (Nhánh thua) - 16 trận
+                if (roundIndex === 4) {
+                    // Losers from Round 2.1 + Winners from Round 2.2
                     if (isPlayer1) {
-                        return {text: `Thắng trận ${17 + matchIndex}`, class: "win-placeholder"};
+                        // Loser from Round 2.1
+                        const sourceMatch = matchIndex < 8 ? matchIndex : matchIndex - 8;
+                        return {text: `Thua trận ${33 + sourceMatch}`, class: "lose-placeholder"};
                     } else {
-                        return {text: `Thắng trận ${33 + matchIndex}`, class: "win-placeholder"};
+                        // Winner from Round 2.2
+                        return {text: `Thắng trận ${49 + matchIndex}`, class: "win-placeholder"};
                     }
                 }
                 
-                if (roundIndex === 5) { // Quarterfinals
-                    return {text: `Thắng trận ${41 + (matchIndex * 2) + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                // Round 4 (Nhánh thua) - 16 trận
+                if (roundIndex === 5) {
+                    if (isPlayer1) {
+                        return {text: `Thua trận ${49 + matchIndex}`, class: "lose-placeholder"};
+                    } else {
+                        return {text: `Thắng trận ${65 + matchIndex}`, class: "win-placeholder"};
+                    }
                 }
                 
-                if (roundIndex === 6) { // Semifinals
-                    return {text: `Thắng trận ${49 + (matchIndex * 2) + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                // Round 5 (1/16) - 16 trận - Bắt đầu loại trực tiếp từ 32 người
+                if (roundIndex === 6) {
+                    if (isPlayer1) {
+                        return {text: `Thắng trận ${49 + matchIndex}`, class: "win-placeholder"};
+                    } else {
+                        return {text: `Thắng trận ${81 + matchIndex}`, class: "win-placeholder"};
+                    }
                 }
                 
-                if (roundIndex === 7) { // Finals
-                    return {text: `Thắng trận ${53 + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                // Round 6 (1/8) - 8 trận
+                if (roundIndex === 7) {
+                    return {text: `Thắng trận ${97 + (matchIndex * 2) + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                }
+                
+                // Round 7 (Tứ kết) - 4 trận
+                if (roundIndex === 8) {
+                    return {text: `Thắng trận ${113 + (matchIndex * 2) + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                }
+                
+                // Round 8 (Bán kết) - 2 trận
+                if (roundIndex === 9) {
+                    return {text: `Thắng trận ${121 + (matchIndex * 2) + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
+                }
+                
+                // Round 9 (Chung kết) - 1 trận
+                if (roundIndex === 10) {
+                    return {text: `Thắng trận ${125 + (isPlayer1 ? 0 : 1)}`, class: "win-placeholder"};
                 }
                 
                 return {text: "Chờ kết quả", class: "placeholder"};
@@ -893,19 +822,17 @@
             
             // Function to check for duplicate matchups before quarterfinals
             function checkDuplicateMatchups() {
-                const matchHistory = new Map(); // Map to store all matchups: "player1|player2" -> [round, matchIndex]
+                const matchHistory = new Map();
                 const issues = [];
                 
-                // Check all rounds before quarterfinals (rounds 0-4)
-                // Round 0 = Vòng 1, Round 1 = Vòng 2.1, Round 2 = Vòng 2.2, Round 3 = Vòng 3, Round 4 = Vòng 4 (1/16)
-                for (let roundIndex = 0; roundIndex < 5; roundIndex++) {
+                // Check all rounds before quarterfinals (rounds 0-6)
+                for (let roundIndex = 0; roundIndex < 7; roundIndex++) {
                     const round = tournament.rounds[roundIndex];
                     for (let matchIndex = 0; matchIndex < round.matches.length; matchIndex++) {
                         const match = round.matches[matchIndex];
                         if (match.player1 && match.player2 && 
                             match.player1 !== nonePersonText && match.player2 !== nonePersonText) {
                             
-                            // Create normalized key (alphabetically sorted to catch duplicates regardless of order)
                             const players = [match.player1, match.player2].sort();
                             const key = players.join('|');
                             
@@ -913,7 +840,7 @@
                                 const previousMatch = matchHistory.get(key);
                                 const previousRound = tournament.rounds[previousMatch.round];
                                 const roundNames = ['Vòng 1', 'Vòng 2.1 (Nhánh thắng)', 'Vòng 2.2 (Nhánh thua)', 
-                                                   'Vòng 3 (Nhánh thua)', 'Vòng 4 (1/16)'];
+                                                   'Vòng 3.1 (Nhánh thắng)', 'Vòng 3.2 (Nhánh thua)', 'Vòng 4 (Nhánh thua)', 'Vòng 5 (1/16)'];
                                 issues.push({
                                     players: players,
                                     firstMatch: `${roundNames[previousMatch.round]}, Trận ${previousMatch.matchIndex + 1}`,
@@ -938,42 +865,17 @@
                 const winner = winnerIndex === 0 ? currentMatch.player1 : currentMatch.player2;
                 const loser = winnerIndex === 0 ? currentMatch.player2 : currentMatch.player1;
                 
-                // Check for duplicate matchups (log to console only, user can check manually)
+                // Check for duplicate matchups
                 const duplicateIssues = checkDuplicateMatchups();
                 if (duplicateIssues.length > 0) {
                     console.warn('⚠ Phát hiện trận đấu trùng lặp trước tứ kết:', duplicateIssues);
                 }
                 
-                // Depending on the current round, update the next rounds
-                if (roundIndex === 0) { // Round 1
-                    // Winner goes to Round 2.1
+                // Round 1 (32 matches, 64 players)
+                if (roundIndex === 0) {
+                    // Winner goes to Round 2.1 (Winners bracket)
                     const nextRound2_1 = tournament.rounds[1];
-                    let targetMatchIndex;
-                    if (matchIndex === 0 || matchIndex === 15) {
-                        targetMatchIndex = 0
-                    }
-                    if (matchIndex === 1 || matchIndex === 14) {
-                        targetMatchIndex = 1
-                    }
-                    if (matchIndex === 2 || matchIndex === 13) {
-                        targetMatchIndex = 2
-                    }
-                    if (matchIndex === 3 || matchIndex === 12) {
-                        targetMatchIndex = 3
-                    }
-                    if (matchIndex === 4 || matchIndex === 11) {
-                        targetMatchIndex = 4
-                    }
-                    if (matchIndex === 5 || matchIndex === 10) {
-                        targetMatchIndex = 5
-                    }
-                    if (matchIndex === 6 || matchIndex === 9) {
-                        targetMatchIndex = 6
-                    }
-                    if (matchIndex === 7 || matchIndex === 8) {
-                        targetMatchIndex = 7
-                    }
-                    
+                    const targetMatchIndex = Math.floor(matchIndex / 2);
                     if (targetMatchIndex < nextRound2_1.matches.length) {
                         const targetMatch = nextRound2_1.matches[targetMatchIndex];
                         if (matchIndex % 2 === 0) {
@@ -983,128 +885,179 @@
                         }
                     }
                     
-                    // Loser goes to Round 2.2
+                    // Loser goes to Round 2.2 (Losers bracket)
+                    // Mapping để tạo các cặp: 49vs61, 50vs63, 51vs62, 52vs64, 53vs57, 54vs59, 55vs58, 56vs60
                     const nextRound2_2 = tournament.rounds[2];
                     let targetMatchIndex2;
-
-                    if (matchIndex === 0 || matchIndex === 1) {
-                        targetMatchIndex2 = 3
-                    }
-                    if (matchIndex === 2 || matchIndex === 3) {
-                        targetMatchIndex2 = 0
-                    }
-                    if (matchIndex === 4 || matchIndex === 5) {
-                        targetMatchIndex2 = 1
-                    }
-                    if (matchIndex === 6 || matchIndex === 7) {
-                        targetMatchIndex2 = 2
-                    }
-
-                    if (matchIndex === 8 || matchIndex === 9) {
-                        targetMatchIndex2 = 7
-                    }
-                    if (matchIndex === 10 || matchIndex === 11) {
-                        targetMatchIndex2 = 4
-                    }
-                    if (matchIndex === 12 || matchIndex === 13) {
-                        targetMatchIndex2 = 5
-                    }
-                    if (matchIndex === 14 || matchIndex === 15) {
-                        targetMatchIndex2 = 6
+                    let targetPlayer;
+                    
+                    // Mapping logic để tạo các cặp đấu theo yêu cầu
+                    if (matchIndex === 0) { // Trận 1 → Trận 49 (matchIndex 0)
+                        targetMatchIndex2 = 0;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 12) { // Trận 13 → Trận 49 (matchIndex 0)
+                        targetMatchIndex2 = 0;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 1) { // Trận 2 → Trận 50 (matchIndex 1)
+                        targetMatchIndex2 = 1;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 14) { // Trận 15 → Trận 50 (matchIndex 1)
+                        targetMatchIndex2 = 1;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 2) { // Trận 3 → Trận 51 (matchIndex 2)
+                        targetMatchIndex2 = 2;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 13) { // Trận 14 → Trận 51 (matchIndex 2)
+                        targetMatchIndex2 = 2;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 3) { // Trận 4 → Trận 52 (matchIndex 3)
+                        targetMatchIndex2 = 3;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 15) { // Trận 16 → Trận 52 (matchIndex 3)
+                        targetMatchIndex2 = 3;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 4) { // Trận 5 → Trận 53 (matchIndex 4)
+                        targetMatchIndex2 = 4;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 8) { // Trận 9 → Trận 53 (matchIndex 4)
+                        targetMatchIndex2 = 4;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 5) { // Trận 6 → Trận 54 (matchIndex 5)
+                        targetMatchIndex2 = 5;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 10) { // Trận 11 → Trận 54 (matchIndex 5)
+                        targetMatchIndex2 = 5;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 6) { // Trận 7 → Trận 55 (matchIndex 6)
+                        targetMatchIndex2 = 6;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 9) { // Trận 10 → Trận 55 (matchIndex 6)
+                        targetMatchIndex2 = 6;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 7) { // Trận 8 → Trận 56 (matchIndex 7)
+                        targetMatchIndex2 = 7;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 11) { // Trận 12 → Trận 56 (matchIndex 7)
+                        targetMatchIndex2 = 7;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 16) { // Trận 17 → Trận 57 (matchIndex 8)
+                        targetMatchIndex2 = 8;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 20) { // Trận 21 → Trận 57 (matchIndex 8)
+                        targetMatchIndex2 = 8;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 17) { // Trận 18 → Trận 58 (matchIndex 9)
+                        targetMatchIndex2 = 9;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 19) { // Trận 20 → Trận 58 (matchIndex 9)
+                        targetMatchIndex2 = 9;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 18) { // Trận 19 → Trận 59 (matchIndex 10)
+                        targetMatchIndex2 = 10;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 22) { // Trận 23 → Trận 59 (matchIndex 10)
+                        targetMatchIndex2 = 10;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 21) { // Trận 22 → Trận 60 (matchIndex 11)
+                        targetMatchIndex2 = 11;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 23) { // Trận 24 → Trận 60 (matchIndex 11)
+                        targetMatchIndex2 = 11;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 24) { // Trận 25 → Trận 61 (matchIndex 12)
+                        targetMatchIndex2 = 12;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 28) { // Trận 29 → Trận 61 (matchIndex 12)
+                        targetMatchIndex2 = 12;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 25) { // Trận 26 → Trận 62 (matchIndex 13)
+                        targetMatchIndex2 = 13;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 27) { // Trận 28 → Trận 62 (matchIndex 13)
+                        targetMatchIndex2 = 13;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 26) { // Trận 27 → Trận 63 (matchIndex 14)
+                        targetMatchIndex2 = 14;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 30) { // Trận 31 → Trận 63 (matchIndex 14)
+                        targetMatchIndex2 = 14;
+                        targetPlayer = 'player2';
+                    } else if (matchIndex === 29) { // Trận 30 → Trận 64 (matchIndex 15)
+                        targetMatchIndex2 = 15;
+                        targetPlayer = 'player1';
+                    } else if (matchIndex === 31) { // Trận 32 → Trận 64 (matchIndex 15)
+                        targetMatchIndex2 = 15;
+                        targetPlayer = 'player2';
                     }
                     
-                    if (targetMatchIndex2 < nextRound2_2.matches.length) {
+                    if (targetMatchIndex2 !== undefined && targetMatchIndex2 < nextRound2_2.matches.length) {
                         const targetMatch = nextRound2_2.matches[targetMatchIndex2];
-                        if (matchIndex % 2 === 0) {
-                            targetMatch.player1 = loser;
-                        } else {
-                            targetMatch.player2 = loser;
-                        }
-                    }
-                } 
-                else if (roundIndex === 1) { // Round 2.1 (Winners bracket)
-                    // Winner goes to Quarterfinals (Round 4)
-                    const nextRound4 = tournament.rounds[4];
-                    if (matchIndex < nextRound4.matches.length) {
-                        nextRound4.matches[matchIndex].player1 = winner;
-                    }
-                    
-                    // Loser goes to Round 3 (Losers bracket)
-                    const nextRound3 = tournament.rounds[3];
-                    // if (matchIndex < nextRound3.matches.length) {
-                    //     nextRound3.matches[matchIndex].player1 = loser;
-                    // }
-
-                    if (matchIndex === 0) {
-                        nextRound3.matches[1].player1 = loser;
-                    } else if (matchIndex === 1) {
-                        nextRound3.matches[0].player1 = loser;
-                    } else if (matchIndex === 2) {
-                        nextRound3.matches[3].player1 = loser;
-                    } else if (matchIndex === 3) {
-                        nextRound3.matches[2].player1 = loser;
-                    } else if (matchIndex === 4) {
-                        nextRound3.matches[5].player1 = loser;
-                    } else if (matchIndex === 5) {
-                        nextRound3.matches[4].player1 = loser;
-                    } else if (matchIndex === 6) {
-                        nextRound3.matches[7].player1 = loser;
-                    } else if (matchIndex === 7) {
-                        nextRound3.matches[6].player1 = loser;
-                    }
-                } 
-                else if (roundIndex === 2) { // Round 2.2 (Losers bracket)
-                    // Winner goes to Round 3
-                    const nextRound3 = tournament.rounds[3];
-                    // Mapping: Round 2.2 matchIndex maps to Round 3 matchIndex
-                    // Round 2.1 matchIndex = 1 → Round 3 matchIndex = 0 player1
-                    // Round 2.2 matchIndex = 0 → Round 3 matchIndex = 0 player2
-                    // Round 2.1 matchIndex = 0 → Round 3 matchIndex = 1 player1
-                    // Round 2.2 matchIndex = 1 → Round 3 matchIndex = 1 player2
-                    if (matchIndex === 0) {
-                        nextRound3.matches[0].player2 = winner;
-                    } else if (matchIndex === 1) {
-                        nextRound3.matches[1].player2 = winner;
-                    } else if (matchIndex === 2) {
-                        nextRound3.matches[2].player2 = winner;
-                    } else if (matchIndex === 3) {
-                        nextRound3.matches[3].player2 = winner;
-                    } else if (matchIndex === 4) {
-                        nextRound3.matches[4].player2 = winner;
-                    } else if (matchIndex === 5) {
-                        nextRound3.matches[5].player2 = winner;
-                    } else if (matchIndex === 6) {
-                        nextRound3.matches[6].player2 = winner;
-                    } else if (matchIndex === 7) {
-                        nextRound3.matches[7].player2 = winner;
-                    }
-                } 
-                else if (roundIndex === 3) { // Round 3 (Losers bracket)
-                    // Winner goes to Quarterfinals (Round 4)
-                    const nextRound4 = tournament.rounds[4];
-                    if (matchIndex < nextRound4.matches.length) {
-                        nextRound4.matches[matchIndex].player2 = winner;
+                        targetMatch[targetPlayer] = loser;
                     }
                 }
-                else if (roundIndex === 4) { // 1/16
-                    // Winner goes to Quarterfinals (Round 5)
-                    const nextRound5 = tournament.rounds[5];
+                // Round 2.1 (Winners bracket) - 16 matches
+                else if (roundIndex === 1) {
+                    // Winner goes to Round 3.1 (Winners bracket)
+                    const nextRound3_1 = tournament.rounds[3];
                     const targetMatchIndex = Math.floor(matchIndex / 2);
-                    
-                    if (targetMatchIndex < nextRound5.matches.length) {
-                        const targetMatch = nextRound5.matches[targetMatchIndex];
+                    if (targetMatchIndex < nextRound3_1.matches.length) {
+                        const targetMatch = nextRound3_1.matches[targetMatchIndex];
                         if (matchIndex % 2 === 0) {
                             targetMatch.player1 = winner;
                         } else {
                             targetMatch.player2 = winner;
                         }
                     }
-                }
-                else if (roundIndex === 5) { // Quarterfinals
-                    // Winner goes to Semifinals (Round 6)
-                    const nextRound6 = tournament.rounds[6];
-                    const targetMatchIndex = Math.floor(matchIndex / 2);
                     
+                    // Loser goes to Round 3.2 (Losers bracket)
+                    const nextRound3_2 = tournament.rounds[4];
+                    if (matchIndex < nextRound3_2.matches.length) {
+                        nextRound3_2.matches[matchIndex].player1 = loser;
+                    }
+                }
+                // Round 2.2 (Losers bracket) - 16 matches
+                else if (roundIndex === 2) {
+                    // Winner goes to Round 3.2 (Losers bracket)
+                    const nextRound3_2 = tournament.rounds[4];
+                    if (matchIndex < nextRound3_2.matches.length) {
+                        nextRound3_2.matches[matchIndex].player2 = winner;
+                    }
+                }
+                // Round 3.1 (Winners bracket) - 8 matches
+                else if (roundIndex === 3) {
+                    // Winner goes to Round 5 (1/16) - Direct elimination starts
+                    const nextRound5 = tournament.rounds[6];
+                    if (matchIndex < nextRound5.matches.length) {
+                        nextRound5.matches[matchIndex].player1 = winner;
+                    }
+                    
+                    // Loser goes to Round 4 (Losers bracket)
+                    const nextRound4 = tournament.rounds[5];
+                    if (matchIndex < nextRound4.matches.length) {
+                        nextRound4.matches[matchIndex].player1 = loser;
+                    }
+                }
+                // Round 3.2 (Losers bracket) - 16 matches
+                else if (roundIndex === 4) {
+                    // Winner goes to Round 4 (Losers bracket)
+                    const nextRound4 = tournament.rounds[5];
+                    if (matchIndex < nextRound4.matches.length) {
+                        nextRound4.matches[matchIndex].player2 = winner;
+                    }
+                }
+                // Round 4 (Losers bracket) - 16 matches
+                else if (roundIndex === 5) {
+                    // Winner goes to Round 5 (1/16)
+                    const nextRound5 = tournament.rounds[6];
+                    if (matchIndex < nextRound5.matches.length) {
+                        nextRound5.matches[matchIndex].player2 = winner;
+                    }
+                }
+                // Round 5 (1/16) - 16 matches - Direct elimination from 32 players
+                else if (roundIndex === 6) {
+                    // Winner goes to Round 6 (1/8)
+                    const nextRound6 = tournament.rounds[7];
+                    const targetMatchIndex = Math.floor(matchIndex / 2);
                     if (targetMatchIndex < nextRound6.matches.length) {
                         const targetMatch = nextRound6.matches[targetMatchIndex];
                         if (matchIndex % 2 === 0) {
@@ -1114,14 +1067,43 @@
                         }
                     }
                 }
-                else if (roundIndex === 6) { // Semifinals
-                    // Winner goes to Finals (Round 7)
-                    const nextRound7 = tournament.rounds[7];
-                    if (nextRound7.matches.length > 0) {
-                        if (matchIndex === 0) {
-                            nextRound7.matches[0].player1 = winner;
+                // Round 6 (1/8) - 8 matches
+                else if (roundIndex === 7) {
+                    // Winner goes to Round 7 (Tứ kết)
+                    const nextRound7 = tournament.rounds[8];
+                    const targetMatchIndex = Math.floor(matchIndex / 2);
+                    if (targetMatchIndex < nextRound7.matches.length) {
+                        const targetMatch = nextRound7.matches[targetMatchIndex];
+                        if (matchIndex % 2 === 0) {
+                            targetMatch.player1 = winner;
                         } else {
-                            nextRound7.matches[0].player2 = winner;
+                            targetMatch.player2 = winner;
+                        }
+                    }
+                }
+                // Round 7 (Tứ kết) - 4 matches
+                else if (roundIndex === 8) {
+                    // Winner goes to Round 8 (Bán kết)
+                    const nextRound8 = tournament.rounds[9];
+                    const targetMatchIndex = Math.floor(matchIndex / 2);
+                    if (targetMatchIndex < nextRound8.matches.length) {
+                        const targetMatch = nextRound8.matches[targetMatchIndex];
+                        if (matchIndex % 2 === 0) {
+                            targetMatch.player1 = winner;
+                        } else {
+                            targetMatch.player2 = winner;
+                        }
+                    }
+                }
+                // Round 8 (Bán kết) - 2 matches
+                else if (roundIndex === 9) {
+                    // Winner goes to Round 9 (Chung kết)
+                    const nextRound9 = tournament.rounds[10];
+                    if (nextRound9.matches.length > 0) {
+                        if (matchIndex === 0) {
+                            nextRound9.matches[0].player1 = winner;
+                        } else {
+                            nextRound9.matches[0].player2 = winner;
                         }
                     }
                 }
@@ -1129,18 +1111,17 @@
             
             function saveTournament() {
                 if (tournament) {
-                    // Lưu cả danh sách người chơi và tên giải đấu
                     const saveData = {
                         tournament: tournament,
                         players: playersTextarea.value,
                         tournamentName: tournamentNameInput.value
                     };
-                    localStorage.setItem('pingpongTournament', JSON.stringify(saveData));
+                    localStorage.setItem('pingpongTournament64', JSON.stringify(saveData));
                 }
             }
             
             function loadTournament() {
-                const savedData = localStorage.getItem('pingpongTournament');
+                const savedData = localStorage.getItem('pingpongTournament64');
                 if (savedData) {
                     const { tournament: savedTournament, players, tournamentName } = JSON.parse(savedData);
                     tournament = savedTournament;
@@ -1162,7 +1143,6 @@
             }
             
             function exportTournament() {
-                // Create a clone of the bracket container for exporting
                 const exportContainer = document.createElement('div');
                 exportContainer.style.position = 'absolute';
                 exportContainer.style.left = '-9999px';
@@ -1170,16 +1150,13 @@
                 exportContainer.style.padding = '20px';
                 exportContainer.style.background = 'linear-gradient(135deg, #1a2a6c, #b21f1f)';
                 
-                // Add tournament title
                 const titleElement = document.createElement('div');
                 titleElement.className = 'tournament-title';
                 titleElement.textContent = tournament.name;
                 exportContainer.appendChild(titleElement);
                 
-                // Clone bracket
                 exportContainer.appendChild(bracketContainer.cloneNode(true));
                 
-                // Add champion section if exists
                 if (tournament.champion) {
                     const championClone = championSection.cloneNode(true);
                     championClone.style.display = 'block';
@@ -1194,11 +1171,10 @@
                     useCORS: true
                 }).then(canvas => {
                     const link = document.createElement('a');
-                    link.download = 'giai-dau-bong-ban.png';
+                    link.download = 'giai-dau-bong-ban-64.png';
                     link.href = canvas.toDataURL('image/png');
                     link.click();
                     
-                    // Clean up
                     document.body.removeChild(exportContainer);
                     exportMessage.textContent = "Đã tạo ảnh giải đấu thành công!";
                     
@@ -1214,3 +1190,4 @@
     </script>
 </body>
 </html>
+
